@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { colors } from '../constants/colors';
-import { FiPhone, FiMail, FiX } from 'react-icons/fi';
+import { FiPhone, FiMail, FiX, FiClock } from 'react-icons/fi';
 
 const contacts = [
   {
@@ -46,20 +46,19 @@ export default function CTA() {
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">
               Entre em contato conosco e descubra como podemos ajudar você a tornar o turismo mais acessível.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6">
               <button
                 onClick={openModal}
-                className={`${colors.gradient} ${colors.gradientHover} rounded-full px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300`}
+                className={`${colors.gradient} ${colors.gradientHover} rounded-full px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 w-full sm:w-auto`}
               >
                 Fale Conosco
               </button>
               <a
-                href="https://github.com/ProjetoIntegrador1Turismo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#F50437] transition-colors"
+                href="/timeline"
+                className={`${colors.gradient} ${colors.gradientHover} rounded-full px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto`}
               >
-                Saiba mais <span aria-hidden="true">→</span>
+                <FiClock className="h-4 w-4" />
+                Nossa jornada
               </a>
             </div>
           </div>

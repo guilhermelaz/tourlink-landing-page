@@ -1,15 +1,16 @@
 'use client';
 import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
-import { FiMenu, FiX, FiExternalLink } from 'react-icons/fi';
+import { FiMenu, FiX, FiExternalLink, FiClock } from 'react-icons/fi';
 import Image from 'next/image';
 import { colors } from '../constants/colors';
 
 const navigation = [
-  { name: 'Início', href: '#' },
+  { name: 'Início', href: '/' },
   { name: 'Solução', href: '#solution' },
   { name: 'Mercado', href: '#market' },
   { name: 'Equipe', href: '#team' },
+  { name: 'Timeline', href: '/timeline', icon: FiClock },
 ];
 
 export default function Navbar() {
@@ -19,7 +20,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 bg-white/80 backdrop-blur-sm">
       <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Tourlink</span>
             <Image
               src="/logo.png"
@@ -34,7 +35,7 @@ export default function Navbar() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 hover:text-[#F50437] transition-colors"
+            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Abrir menu principal</span>
@@ -46,8 +47,9 @@ export default function Navbar() {
             <a
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#F50437] transition-colors"
+              className="flex items-center gap-1 text-sm font-semibold leading-6 text-gray-900 hover:text-[#F50437] transition-colors"
             >
+              {item.icon && <item.icon className="h-4 w-4" />}
               {item.name}
             </a>
           ))}
@@ -64,23 +66,23 @@ export default function Navbar() {
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-50 bg-black/20" />
+        <div className="fixed inset-0 z-50" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
+            <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Tourlink</span>
               <Image
                 src="/logo.png"
                 alt="Tourlink Logo"
                 width={120}
                 height={40}
-                className="h-10 w-auto"
+                className="h-8 w-auto"
                 priority
               />
             </a>
             <button
               type="button"
-              className="-m-2.5 rounded-md p-2.5 text-gray-700 hover:text-[#F50437] transition-colors"
+              className="-m-2.5 rounded-md p-2.5 text-gray-700"
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="sr-only">Fechar menu</span>
@@ -94,9 +96,9 @@ export default function Navbar() {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                    onClick={() => setMobileMenuOpen(false)}
+                    className="-mx-3 flex items-center gap-2 rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
+                    {item.icon && <item.icon className="h-5 w-5" />}
                     {item.name}
                   </a>
                 ))}
