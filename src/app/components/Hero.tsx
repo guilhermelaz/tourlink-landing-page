@@ -1,9 +1,10 @@
 'use client';
 import { motion } from 'framer-motion';
 import PhoneMockup from './PhoneMockup';
+import { colors } from '../constants/colors';
 
 const appScreenshots = [
-  '/screenshots/pagina 1.png',  // Substitua pelos nomes reais das suas imagens
+  '/screenshots/pagina 1.png',
   '/screenshots/pagina 2.png',
   '/screenshots/pagina 3.png',
   '/screenshots/pagina 4.png',
@@ -12,6 +13,7 @@ const appScreenshots = [
 export default function Hero() {
   return (
     <div className="relative isolate pt-14">
+      {/* Background gradient */}
       <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
         <div
           className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#F50437] to-[#9400DA] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
@@ -29,25 +31,28 @@ export default function Hero() {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            O destino é o mesmo,
-            <br /> o cuidado é especial
+          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
+            <span className={colors.gradient + " bg-clip-text text-transparent"}>
+              O destino é o mesmo,
+            </span>
+            <br />
+            <span className="text-gray-900">o cuidado é especial</span>
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
             Conectamos turistas com necessidades especiais a guias nativos capacitados, tornando o turismo verdadeiramente acessível para todos.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            {/* <a
-              href="#"
-              className="rounded-full bg-[#F50437] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#d40330] transition-colors"
-            >
-              Comece sua jornada
-            </a> */}
             <a
               href="#solution"
+              className={`${colors.gradient} ${colors.gradientHover} rounded-full px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-300`}
+            >
+              Saiba mais
+            </a>
+            <a
+              href="#market"
               className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#F50437] transition-colors"
             >
-              Saiba mais <span aria-hidden="true">→</span>
+              Mercado <span aria-hidden="true">→</span>
             </a>
           </div>
         </motion.div>

@@ -1,6 +1,7 @@
 'use client';
 import { FiUsers, FiMap, FiStar, FiShield } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import { colors } from '../constants/colors';
 
 const features = [
   {
@@ -35,9 +36,13 @@ export default function Features() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
+            className="text-3xl font-bold tracking-tight sm:text-4xl"
           >
-            A solução que derruba barreiras
+            <span className={colors.gradient + " bg-clip-text text-transparent"}>
+              A solução que
+            </span>
+            <br />
+            <span className="text-gray-900">derruba barreiras</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -62,7 +67,7 @@ export default function Features() {
                 className="flex flex-col"
               >
                 <dt className="text-base font-semibold leading-7 text-gray-900">
-                  <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-lg bg-[#F50437]">
+                  <div className={`mb-6 flex h-10 w-10 items-center justify-center rounded-lg ${colors.gradient} shadow-md`}>
                     <feature.icon className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
                   {feature.name}
