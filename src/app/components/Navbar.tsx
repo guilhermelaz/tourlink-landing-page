@@ -52,14 +52,14 @@ export default function Navbar() {
             </a>
           ))}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        {/* <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <a
             href="#"
             className="rounded-full bg-[#F50437] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#d40330] transition-colors"
           >
             Começar agora
           </a>
-        </div>
+        </div> */}
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-50" />
@@ -99,7 +99,7 @@ export default function Navbar() {
                   </a>
                 ))}
               </div>
-              <div className="py-6">
+              {/* <div className="py-6">
                 <a
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white bg-[#F50437] hover:bg-[#d40330] text-center"
@@ -107,7 +107,7 @@ export default function Navbar() {
                 >
                   Começar agora
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </Dialog.Panel>
