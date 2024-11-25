@@ -35,15 +35,15 @@ export default function Hero() {
             <br /> o cuidado é especial
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
-            Conectamos turistas com deficiência a guias nativos capacitados, tornando o turismo verdadeiramente acessível para todos.
+            Conectamos turistas com necessidades especiais a guias nativos capacitados, tornando o turismo verdadeiramente acessível para todos.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <a
+            {/* <a
               href="#"
               className="rounded-full bg-[#F50437] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#d40330] transition-colors"
             >
               Comece sua jornada
-            </a>
+            </a> */}
             <a
               href="#solution"
               className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#F50437] transition-colors"

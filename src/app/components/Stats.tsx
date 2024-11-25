@@ -2,10 +2,10 @@
 import { motion } from 'framer-motion';
 
 const stats = [
-  { id: 1, name: 'Pessoas com deficiência no Brasil', value: '18.6M+' },
+  { id: 1, name: 'Pessoas com necessidades especiais no Brasil', value: '18.6M+' },
   { id: 2, name: 'Mercado de turismo acessível (EUA)', value: 'US$17B' },
-  { id: 3, name: 'Guias cadastrados (meta 2024)', value: '1.000' },
-  { id: 4, name: 'Conexões turista-guia (meta 2024)', value: '100K' },
+  { id: 3, name: 'Guias cadastrados (meta 2025)', value: '500' },
+  { id: 4, name: 'Conexões turista-guia (meta 2025)', value: '50.000' },
 ];
 
 export default function Stats() {

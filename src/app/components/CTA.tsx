@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import { FiGithub, FiExternalLink } from 'react-icons/fi';
 
 export default function CTA() {
   return (
@@ -28,19 +29,32 @@ export default function CTA() {
           <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">
             A Tourlink está aqui para garantir que todos possam explorar o mundo com segurança, conforto e autonomia.
           </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6">
-            <a
-              href="#"
-              className="rounded-full bg-[#F50437] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#d40330] transition-colors"
+
+          <div className="mt-12 flex flex-col items-center">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100"
             >
-              Junte-se a nós
-            </a>
-            <a
-              href="#"
-              className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#F50437] transition-colors"
-            >
-              Saiba mais sobre nossa missão <span aria-hidden="true">→</span>
-            </a>
+              <a
+                href="https://github.com/ProjetoIntegrador1Turismo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block p-6 hover:bg-gray-50 transition-all"
+              >
+                <div className="flex items-center justify-center mb-4">
+                  <FiGithub className="w-8 h-8 text-[#F50437]" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 text-center">
+                  Acompanhe o Desenvolvimento
+                </h3>
+                <div className="flex justify-center gap-6 mt-4 text-sm text-gray-600">
+                  <div className="flex items-center gap-1">
+                    <span>Projeto Ativo</span>
+                    <FiExternalLink className="w-4 h-4" />
+                  </div>
+                </div>
+              </a>
+            </motion.div>
           </div>
         </motion.div>
       </div>
