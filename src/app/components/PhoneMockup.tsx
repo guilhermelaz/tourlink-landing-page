@@ -70,7 +70,7 @@ export default function PhoneMockup({ images }: PhoneMockupProps) {
   }, [images.length, isScrolling, dimensions.height]);
 
   return (
-    <div className="relative mx-auto max-w-[360px] md:max-w-[380px]">
+    <div className="relative mx-auto max-w-[280px] md:max-w-[380px]">
       {/* Phone frame */}
       <div className="relative z-10">
         <svg className="w-full h-auto" viewBox="0 0 320 640" fill="none" xmlns="http://www.w3.org/2000/svg">
