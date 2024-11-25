@@ -7,7 +7,6 @@ const appScreenshots = [
   '/screenshots/pagina 2.png',
   '/screenshots/pagina 3.png',
   '/screenshots/pagina 4.png',
-  '/screenshots/pagina 5.png',
 ];
 
 export default function Hero() {

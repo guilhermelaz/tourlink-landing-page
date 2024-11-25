@@ -1,6 +1,5 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 
 interface PhoneMockupProps {
@@ -9,8 +8,7 @@ interface PhoneMockupProps {
 
 export default function PhoneMockup({ images }: PhoneMockupProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -19,9 +17,7 @@ export default function PhoneMockup({ images }: PhoneMockupProps) {
       if (imageRef.current) {
         const { naturalWidth, naturalHeight } = imageRef.current;
         if (naturalWidth && naturalHeight) {
-          // Get the container width (phone screen width)
-          const containerWidth = scrollRef.current?.clientWidth || 308;
-          // Calculate height maintaining aspect ratio
+          const containerWidth = containerRef.current?.clientWidth || 308;
           const scaledHeight = (containerWidth * naturalHeight) / naturalWidth;
           setDimensions({
             width: containerWidth,
@@ -31,43 +27,25 @@ export default function PhoneMockup({ images }: PhoneMockupProps) {
       }
     };
 
-    // Create a hidden image to get natural dimensions
     const img = document.createElement('img');
     img.src = images[currentIndex];
-    img.onload = () => {
-      if (imageRef.current) {
-        imageRef.current.src = img.src;
-        updateDimensions();
-      }
-    };
+    img.onload = updateDimensions;
+
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
   }, [currentIndex, images]);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (!isScrolling && scrollRef.current && dimensions.height > 0) {
-        setIsScrolling(true);
-        
-        // First scroll to bottom
-        scrollRef.current.scrollTo({
-          top: dimensions.height - scrollRef.current.clientHeight,
-          behavior: 'smooth'
-        });
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
 
-        // After scrolling, change image and reset scroll
-        setTimeout(() => {
-          setCurrentIndex((prev) => (prev + 1) % images.length);
-          setTimeout(() => {
-            if (scrollRef.current) {
-              scrollRef.current.scrollTop = 0;
-              setIsScrolling(false);
-            }
-          }, 100);
-        }, 1000);
-      }
-    }, 4000);
-
-    return () => clearInterval(timer);
-  }, [images.length, isScrolling, dimensions.height]);
+  const paginate = (newDirection: number) => {
+    const nextIndex = currentIndex + newDirection;
+    if (nextIndex >= 0 && nextIndex < images.length) {
+      setCurrentIndex(nextIndex);
+    }
+  };
 
   return (
     <div className="relative mx-auto max-w-[280px] md:max-w-[380px]">
@@ -79,33 +57,44 @@ export default function PhoneMockup({ images }: PhoneMockupProps) {
         </svg>
         
         {/* Screen content */}
-        <div className="absolute inset-[6px] rounded-[34px] overflow-hidden bg-gray-50">
+        <div className="absolute inset-[6px] rounded-[34px] overflow-hidden bg-black">
           <div 
-            ref={scrollRef}
-            className="w-full h-full overflow-y-auto scrollbar-hide"
+            ref={containerRef}
+            className="w-full h-full overflow-y-auto overflow-x-hidden scrollbar-hide relative"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            <AnimatePresence mode="wait">
+            <AnimatePresence initial={false} custom={currentIndex}>
               <motion.div
                 key={currentIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                custom={currentIndex}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={1}
+                onDragEnd={(e, { offset, velocity }) => {
+                  const swipe = swipePower(offset.x, velocity.x);
+
+                  if (swipe < -swipeConfidenceThreshold) {
+                    paginate(1);
+                  } else if (swipe > swipeConfidenceThreshold) {
+                    paginate(-1);
+                  }
+                }}
+                className="h-full flex items-start justify-center"
                 style={{
                   width: '100%',
-                  height: dimensions.height > 0 ? dimensions.height : '100%',
-                  position: 'relative'
+                  position: 'relative',
+                  backgroundColor: 'black'
                 }}
               >
                 <img
                   ref={imageRef}
                   src={images[currentIndex]}
                   alt={`App screenshot ${currentIndex + 1}`}
+                  className="w-full h-auto"
                   style={{
-                    width: '100%',
-                    height: 'auto',
-                    display: 'block'
+                    touchAction: 'pan-y',
+                    objectFit: 'contain',
+                    maxWidth: '100%'
                   }}
                 />
               </motion.div>
@@ -115,6 +104,46 @@ export default function PhoneMockup({ images }: PhoneMockupProps) {
 
         {/* Notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-6 bg-[#1F2937] rounded-b-3xl" />
+      </div>
+
+      {/* Navigation buttons for desktop */}
+      <button
+        onClick={() => currentIndex > 0 && setCurrentIndex(currentIndex - 1)}
+        className={`hidden md:flex absolute left-[-3rem] top-1/2 transform -translate-y-1/2 z-20 
+          items-center justify-center w-10 h-10 rounded-full bg-white/90 shadow-md hover:bg-white 
+          transition-all duration-200 ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+        disabled={currentIndex === 0}
+        aria-label="Previous image"
+      >
+        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <button
+        onClick={() => currentIndex < images.length - 1 && setCurrentIndex(currentIndex + 1)}
+        className={`hidden md:flex absolute right-[-3rem] top-1/2 transform -translate-y-1/2 z-20 
+          items-center justify-center w-10 h-10 rounded-full bg-white/90 shadow-md hover:bg-white 
+          transition-all duration-200 ${currentIndex === images.length - 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+        disabled={currentIndex === images.length - 1}
+        aria-label="Next image"
+      >
+        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      {/* Navigation caption */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+        <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-1.5 rounded-full shadow-sm">
+          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <p className="text-sm font-medium text-gray-600">Deslize para navegar</p>
+          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </div>
       </div>
 
       {/* Decorative elements */}
@@ -143,22 +172,20 @@ export default function PhoneMockup({ images }: PhoneMockupProps) {
         }}
       />
 
-      {/* Navigation dots */}
-      <div className="absolute bottom-[-2rem] left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              if (!isScrolling) {
-                setCurrentIndex(index);
-              }
-            }}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              index === currentIndex ? 'bg-[#F50437] w-4' : 'bg-gray-300'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
+      {/* Page indicators */}
+      <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="flex space-x-2">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex ? 'bg-[#F50437] w-4' : 'bg-gray-300'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
