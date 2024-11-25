@@ -27,7 +27,7 @@ export const timelineEvents: TimelineEvent[] = [
   {
     date: '2024-05',
     title: 'Inclusive Journey',
-    description: 'Desenvolvemos a extensão "Inclusive Journey" focada em reunir informações sobre acessibilidade em pontos turísticos. O projeto foi vencedor em segundo lugar. ',
+    description: 'Desenvolvemos a extensão "Inclusive Journey" focada em reunir informações sobre acessibilidade em pontos turísticos. O projeto foi vencedor em segundo lugar no Hackatour Cataratas. ',
     imageUrl: '/timeline/inclusive journey.png'
   },
   {
